@@ -2,7 +2,7 @@
 
 *****************
 
-## Release ONDEWO SURVEY C++ Client 0.1.0
+## Release ONDEWO SURVEY C++ Client 2.0.0
 
 ### New Features
 
