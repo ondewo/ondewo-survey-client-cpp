@@ -9,7 +9,7 @@
 * Initial release of `ondewo-survey-client-cpp`, the C++ gRPC client library for the
   [ONDEWO SURVEY API](https://github.com/ondewo/ondewo-survey-api) (Survey). The stubs are generated
   from the `ondewo-survey-api` submodule by the `ondewo-cpp-proto-compiler` image of
-  [ondewo-proto-compiler](https://github.com/ondewo/ondewo-proto-compiler) 5.15.0, using protoc's
+  [ondewo-proto-compiler](https://github.com/ondewo/ondewo-proto-compiler) 5.15.1, using protoc's
   built-in `--cpp_out` for the messages and `grpc_cpp_plugin` for the service stubs.
 * Ships as a consumable CMake package: `find_package(ondewo_survey_client CONFIG REQUIRED)` plus
   `target_link_libraries(my_app PRIVATE ondewo::ondewo_survey_client)`. The package installs the generated
