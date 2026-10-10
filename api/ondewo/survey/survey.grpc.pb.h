@@ -4,17 +4,11 @@
 // Original file comments:
 // Copyright 2020 ONDEWO GmbH
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 //
-//     http://www.apache.org/licenses/LICENSE-2.0
+//     <a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a>
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License. (editesyntax = "proto3";
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License. (editesyntax = "proto3";
 #ifndef GRPC_ondewo_2fsurvey_2fsurvey_2eproto__INCLUDED
 #define GRPC_ondewo_2fsurvey_2fsurvey_2eproto__INCLUDED
 
@@ -52,7 +46,7 @@ class Surveys final {
   class StubInterface {
    public:
     virtual ~StubInterface() {}
-    // Create a Survey and an empty NLU Agent for it
+    // <p>Create a Survey and an empty NLU Agent for it</p>
     virtual ::grpc::Status CreateSurvey(::grpc::ClientContext* context, const ::ondewo::survey::CreateSurveyRequest& request, ::ondewo::survey::Survey* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::Survey>> AsyncCreateSurvey(::grpc::ClientContext* context, const ::ondewo::survey::CreateSurveyRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::Survey>>(AsyncCreateSurveyRaw(context, request, cq));
@@ -60,7 +54,7 @@ class Surveys final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::Survey>> PrepareAsyncCreateSurvey(::grpc::ClientContext* context, const ::ondewo::survey::CreateSurveyRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::Survey>>(PrepareAsyncCreateSurveyRaw(context, request, cq));
     }
-    // Retrieve a Survey message from the Database and return it
+    // <p>Retrieve a Survey message from the Database and return it</p>
     virtual ::grpc::Status GetSurvey(::grpc::ClientContext* context, const ::ondewo::survey::GetSurveyRequest& request, ::ondewo::survey::Survey* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::Survey>> AsyncGetSurvey(::grpc::ClientContext* context, const ::ondewo::survey::GetSurveyRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::Survey>>(AsyncGetSurveyRaw(context, request, cq));
@@ -68,7 +62,7 @@ class Surveys final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::Survey>> PrepareAsyncGetSurvey(::grpc::ClientContext* context, const ::ondewo::survey::GetSurveyRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::Survey>>(PrepareAsyncGetSurveyRaw(context, request, cq));
     }
-    // Update an existing Survey message from the Database and return it
+    // <p>Update an existing Survey message from the Database and return it</p>
     virtual ::grpc::Status UpdateSurvey(::grpc::ClientContext* context, const ::ondewo::survey::UpdateSurveyRequest& request, ::ondewo::survey::Survey* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::Survey>> AsyncUpdateSurvey(::grpc::ClientContext* context, const ::ondewo::survey::UpdateSurveyRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::Survey>>(AsyncUpdateSurveyRaw(context, request, cq));
@@ -76,7 +70,7 @@ class Surveys final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::Survey>> PrepareAsyncUpdateSurvey(::grpc::ClientContext* context, const ::ondewo::survey::UpdateSurveyRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::Survey>>(PrepareAsyncUpdateSurveyRaw(context, request, cq));
     }
-    // Delete a survey and its associated agent (if existent)
+    // <p>Delete a survey and its associated agent (if existent)</p>
     virtual ::grpc::Status DeleteSurvey(::grpc::ClientContext* context, const ::ondewo::survey::DeleteSurveyRequest& request, ::google::protobuf::Empty* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>> AsyncDeleteSurvey(::grpc::ClientContext* context, const ::ondewo::survey::DeleteSurveyRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>>(AsyncDeleteSurveyRaw(context, request, cq));
@@ -84,7 +78,7 @@ class Surveys final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>> PrepareAsyncDeleteSurvey(::grpc::ClientContext* context, const ::ondewo::survey::DeleteSurveyRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>>(PrepareAsyncDeleteSurveyRaw(context, request, cq));
     }
-    // Returns the list of all surveys in the server
+    // <p>Returns the list of all surveys in the server</p>
     virtual ::grpc::Status ListSurveys(::grpc::ClientContext* context, const ::ondewo::survey::ListSurveysRequest& request, ::ondewo::survey::ListSurveysResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::ListSurveysResponse>> AsyncListSurveys(::grpc::ClientContext* context, const ::ondewo::survey::ListSurveysRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::ListSurveysResponse>>(AsyncListSurveysRaw(context, request, cq));
@@ -92,7 +86,7 @@ class Surveys final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::ListSurveysResponse>> PrepareAsyncListSurveys(::grpc::ClientContext* context, const ::ondewo::survey::ListSurveysRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::ListSurveysResponse>>(PrepareAsyncListSurveysRaw(context, request, cq));
     }
-    // Retrieve answers to survey questions collected in interactions with a survey agent for a specific session
+    // <p>Retrieve answers to survey questions collected in interactions with a survey agent for a specific session</p>
     virtual ::grpc::Status GetSurveyAnswers(::grpc::ClientContext* context, const ::ondewo::survey::GetSurveyAnswersRequest& request, ::ondewo::survey::SurveyAnswersResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::SurveyAnswersResponse>> AsyncGetSurveyAnswers(::grpc::ClientContext* context, const ::ondewo::survey::GetSurveyAnswersRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::SurveyAnswersResponse>>(AsyncGetSurveyAnswersRaw(context, request, cq));
@@ -100,7 +94,7 @@ class Surveys final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::SurveyAnswersResponse>> PrepareAsyncGetSurveyAnswers(::grpc::ClientContext* context, const ::ondewo::survey::GetSurveyAnswersRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::SurveyAnswersResponse>>(PrepareAsyncGetSurveyAnswersRaw(context, request, cq));
     }
-    // Retrieve all answers to survey questions collected in interactions with a survey agent in any session
+    // <p>Retrieve all answers to survey questions collected in interactions with a survey agent in any session</p>
     virtual ::grpc::Status GetAllSurveyAnswers(::grpc::ClientContext* context, const ::ondewo::survey::GetAllSurveyAnswersRequest& request, ::ondewo::survey::SurveyAnswersResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::SurveyAnswersResponse>> AsyncGetAllSurveyAnswers(::grpc::ClientContext* context, const ::ondewo::survey::GetAllSurveyAnswersRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::SurveyAnswersResponse>>(AsyncGetAllSurveyAnswersRaw(context, request, cq));
@@ -108,7 +102,7 @@ class Surveys final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::SurveyAnswersResponse>> PrepareAsyncGetAllSurveyAnswers(::grpc::ClientContext* context, const ::ondewo::survey::GetAllSurveyAnswersRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::SurveyAnswersResponse>>(PrepareAsyncGetAllSurveyAnswersRaw(context, request, cq));
     }
-    // Populate and configures an NLU Agent from a Survey
+    // <p>Populate and configures an NLU Agent from a Survey</p>
     virtual ::grpc::Status CreateAgentSurvey(::grpc::ClientContext* context, const ::ondewo::survey::AgentSurveyRequest& request, ::ondewo::survey::AgentSurveyResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::AgentSurveyResponse>> AsyncCreateAgentSurvey(::grpc::ClientContext* context, const ::ondewo::survey::AgentSurveyRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::AgentSurveyResponse>>(AsyncCreateAgentSurveyRaw(context, request, cq));
@@ -116,7 +110,7 @@ class Surveys final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::AgentSurveyResponse>> PrepareAsyncCreateAgentSurvey(::grpc::ClientContext* context, const ::ondewo::survey::AgentSurveyRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::AgentSurveyResponse>>(PrepareAsyncCreateAgentSurveyRaw(context, request, cq));
     }
-    // Update an NLU agent from a survey
+    // <p>Update an NLU agent from a survey</p>
     virtual ::grpc::Status UpdateAgentSurvey(::grpc::ClientContext* context, const ::ondewo::survey::AgentSurveyRequest& request, ::ondewo::survey::AgentSurveyResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::AgentSurveyResponse>> AsyncUpdateAgentSurvey(::grpc::ClientContext* context, const ::ondewo::survey::AgentSurveyRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::AgentSurveyResponse>>(AsyncUpdateAgentSurveyRaw(context, request, cq));
@@ -124,7 +118,7 @@ class Surveys final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::AgentSurveyResponse>> PrepareAsyncUpdateAgentSurvey(::grpc::ClientContext* context, const ::ondewo::survey::AgentSurveyRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::AgentSurveyResponse>>(PrepareAsyncUpdateAgentSurveyRaw(context, request, cq));
     }
-    // Deletes all data of an NLU agent associated to a survey
+    // <p>Deletes all data of an NLU agent associated to a survey</p>
     virtual ::grpc::Status DeleteAgentSurvey(::grpc::ClientContext* context, const ::ondewo::survey::AgentSurveyRequest& request, ::google::protobuf::Empty* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>> AsyncDeleteAgentSurvey(::grpc::ClientContext* context, const ::ondewo::survey::AgentSurveyRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>>(AsyncDeleteAgentSurveyRaw(context, request, cq));
@@ -135,34 +129,34 @@ class Surveys final {
     class async_interface {
      public:
       virtual ~async_interface() {}
-      // Create a Survey and an empty NLU Agent for it
+      // <p>Create a Survey and an empty NLU Agent for it</p>
       virtual void CreateSurvey(::grpc::ClientContext* context, const ::ondewo::survey::CreateSurveyRequest* request, ::ondewo::survey::Survey* response, std::function<void(::grpc::Status)>) = 0;
       virtual void CreateSurvey(::grpc::ClientContext* context, const ::ondewo::survey::CreateSurveyRequest* request, ::ondewo::survey::Survey* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // Retrieve a Survey message from the Database and return it
+      // <p>Retrieve a Survey message from the Database and return it</p>
       virtual void GetSurvey(::grpc::ClientContext* context, const ::ondewo::survey::GetSurveyRequest* request, ::ondewo::survey::Survey* response, std::function<void(::grpc::Status)>) = 0;
       virtual void GetSurvey(::grpc::ClientContext* context, const ::ondewo::survey::GetSurveyRequest* request, ::ondewo::survey::Survey* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // Update an existing Survey message from the Database and return it
+      // <p>Update an existing Survey message from the Database and return it</p>
       virtual void UpdateSurvey(::grpc::ClientContext* context, const ::ondewo::survey::UpdateSurveyRequest* request, ::ondewo::survey::Survey* response, std::function<void(::grpc::Status)>) = 0;
       virtual void UpdateSurvey(::grpc::ClientContext* context, const ::ondewo::survey::UpdateSurveyRequest* request, ::ondewo::survey::Survey* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // Delete a survey and its associated agent (if existent)
+      // <p>Delete a survey and its associated agent (if existent)</p>
       virtual void DeleteSurvey(::grpc::ClientContext* context, const ::ondewo::survey::DeleteSurveyRequest* request, ::google::protobuf::Empty* response, std::function<void(::grpc::Status)>) = 0;
       virtual void DeleteSurvey(::grpc::ClientContext* context, const ::ondewo::survey::DeleteSurveyRequest* request, ::google::protobuf::Empty* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // Returns the list of all surveys in the server
+      // <p>Returns the list of all surveys in the server</p>
       virtual void ListSurveys(::grpc::ClientContext* context, const ::ondewo::survey::ListSurveysRequest* request, ::ondewo::survey::ListSurveysResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void ListSurveys(::grpc::ClientContext* context, const ::ondewo::survey::ListSurveysRequest* request, ::ondewo::survey::ListSurveysResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // Retrieve answers to survey questions collected in interactions with a survey agent for a specific session
+      // <p>Retrieve answers to survey questions collected in interactions with a survey agent for a specific session</p>
       virtual void GetSurveyAnswers(::grpc::ClientContext* context, const ::ondewo::survey::GetSurveyAnswersRequest* request, ::ondewo::survey::SurveyAnswersResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void GetSurveyAnswers(::grpc::ClientContext* context, const ::ondewo::survey::GetSurveyAnswersRequest* request, ::ondewo::survey::SurveyAnswersResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // Retrieve all answers to survey questions collected in interactions with a survey agent in any session
+      // <p>Retrieve all answers to survey questions collected in interactions with a survey agent in any session</p>
       virtual void GetAllSurveyAnswers(::grpc::ClientContext* context, const ::ondewo::survey::GetAllSurveyAnswersRequest* request, ::ondewo::survey::SurveyAnswersResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void GetAllSurveyAnswers(::grpc::ClientContext* context, const ::ondewo::survey::GetAllSurveyAnswersRequest* request, ::ondewo::survey::SurveyAnswersResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // Populate and configures an NLU Agent from a Survey
+      // <p>Populate and configures an NLU Agent from a Survey</p>
       virtual void CreateAgentSurvey(::grpc::ClientContext* context, const ::ondewo::survey::AgentSurveyRequest* request, ::ondewo::survey::AgentSurveyResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void CreateAgentSurvey(::grpc::ClientContext* context, const ::ondewo::survey::AgentSurveyRequest* request, ::ondewo::survey::AgentSurveyResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // Update an NLU agent from a survey
+      // <p>Update an NLU agent from a survey</p>
       virtual void UpdateAgentSurvey(::grpc::ClientContext* context, const ::ondewo::survey::AgentSurveyRequest* request, ::ondewo::survey::AgentSurveyResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void UpdateAgentSurvey(::grpc::ClientContext* context, const ::ondewo::survey::AgentSurveyRequest* request, ::ondewo::survey::AgentSurveyResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // Deletes all data of an NLU agent associated to a survey
+      // <p>Deletes all data of an NLU agent associated to a survey</p>
       virtual void DeleteAgentSurvey(::grpc::ClientContext* context, const ::ondewo::survey::AgentSurveyRequest* request, ::google::protobuf::Empty* response, std::function<void(::grpc::Status)>) = 0;
       virtual void DeleteAgentSurvey(::grpc::ClientContext* context, const ::ondewo::survey::AgentSurveyRequest* request, ::google::protobuf::Empty* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
@@ -335,25 +329,25 @@ class Surveys final {
    public:
     Service();
     virtual ~Service();
-    // Create a Survey and an empty NLU Agent for it
+    // <p>Create a Survey and an empty NLU Agent for it</p>
     virtual ::grpc::Status CreateSurvey(::grpc::ServerContext* context, const ::ondewo::survey::CreateSurveyRequest* request, ::ondewo::survey::Survey* response);
-    // Retrieve a Survey message from the Database and return it
+    // <p>Retrieve a Survey message from the Database and return it</p>
     virtual ::grpc::Status GetSurvey(::grpc::ServerContext* context, const ::ondewo::survey::GetSurveyRequest* request, ::ondewo::survey::Survey* response);
-    // Update an existing Survey message from the Database and return it
+    // <p>Update an existing Survey message from the Database and return it</p>
     virtual ::grpc::Status UpdateSurvey(::grpc::ServerContext* context, const ::ondewo::survey::UpdateSurveyRequest* request, ::ondewo::survey::Survey* response);
-    // Delete a survey and its associated agent (if existent)
+    // <p>Delete a survey and its associated agent (if existent)</p>
     virtual ::grpc::Status DeleteSurvey(::grpc::ServerContext* context, const ::ondewo::survey::DeleteSurveyRequest* request, ::google::protobuf::Empty* response);
-    // Returns the list of all surveys in the server
+    // <p>Returns the list of all surveys in the server</p>
     virtual ::grpc::Status ListSurveys(::grpc::ServerContext* context, const ::ondewo::survey::ListSurveysRequest* request, ::ondewo::survey::ListSurveysResponse* response);
-    // Retrieve answers to survey questions collected in interactions with a survey agent for a specific session
+    // <p>Retrieve answers to survey questions collected in interactions with a survey agent for a specific session</p>
     virtual ::grpc::Status GetSurveyAnswers(::grpc::ServerContext* context, const ::ondewo::survey::GetSurveyAnswersRequest* request, ::ondewo::survey::SurveyAnswersResponse* response);
-    // Retrieve all answers to survey questions collected in interactions with a survey agent in any session
+    // <p>Retrieve all answers to survey questions collected in interactions with a survey agent in any session</p>
     virtual ::grpc::Status GetAllSurveyAnswers(::grpc::ServerContext* context, const ::ondewo::survey::GetAllSurveyAnswersRequest* request, ::ondewo::survey::SurveyAnswersResponse* response);
-    // Populate and configures an NLU Agent from a Survey
+    // <p>Populate and configures an NLU Agent from a Survey</p>
     virtual ::grpc::Status CreateAgentSurvey(::grpc::ServerContext* context, const ::ondewo::survey::AgentSurveyRequest* request, ::ondewo::survey::AgentSurveyResponse* response);
-    // Update an NLU agent from a survey
+    // <p>Update an NLU agent from a survey</p>
     virtual ::grpc::Status UpdateAgentSurvey(::grpc::ServerContext* context, const ::ondewo::survey::AgentSurveyRequest* request, ::ondewo::survey::AgentSurveyResponse* response);
-    // Deletes all data of an NLU agent associated to a survey
+    // <p>Deletes all data of an NLU agent associated to a survey</p>
     virtual ::grpc::Status DeleteAgentSurvey(::grpc::ServerContext* context, const ::ondewo::survey::AgentSurveyRequest* request, ::google::protobuf::Empty* response);
   };
   template <class BaseClass>
