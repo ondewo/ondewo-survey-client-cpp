@@ -4,17 +4,11 @@
 // Original file comments:
 // Copyright 2020 ONDEWO GmbH
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 //
-//     http://www.apache.org/licenses/LICENSE-2.0
+//     <a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a>
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License. (editesyntax = "proto3";
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License. (editesyntax = "proto3";
 #ifndef GRPC_ondewo_2fsurvey_2ffhir_2eproto__INCLUDED
 #define GRPC_ondewo_2fsurvey_2ffhir_2eproto__INCLUDED
 
@@ -44,8 +38,8 @@ namespace survey {
 
 // ///// FHIR Services ///////
 //
-// The following servicer was designed to support the FHIR standard.
-// Both Questionnaires and Responses will be detected and transformed for a simpler usage.
+// <p>The following servicer was designed to support the FHIR standard.</p>
+// <p>Both Questionnaires and Responses will be detected and transformed for a simpler usage.</p>
 //
 class FHIR final {
  public:
@@ -55,7 +49,7 @@ class FHIR final {
   class StubInterface {
    public:
     virtual ~StubInterface() {}
-    // Create a Survey from FHIR format and an empty NLU Agent for it
+    // <p>Create a Survey from FHIR format and an empty NLU Agent for it</p>
     virtual ::grpc::Status CreateFHIRSurvey(::grpc::ClientContext* context, const ::ondewo::survey::CreateFHIRSurveyRequest& request, ::ondewo::survey::Survey* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::Survey>> AsyncCreateFHIRSurvey(::grpc::ClientContext* context, const ::ondewo::survey::CreateFHIRSurveyRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::Survey>>(AsyncCreateFHIRSurveyRaw(context, request, cq));
@@ -63,7 +57,7 @@ class FHIR final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::Survey>> PrepareAsyncCreateFHIRSurvey(::grpc::ClientContext* context, const ::ondewo::survey::CreateFHIRSurveyRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::Survey>>(PrepareAsyncCreateFHIRSurveyRaw(context, request, cq));
     }
-    // Get Survey Answers on FHIR format
+    // <p>Get Survey Answers on FHIR format</p>
     virtual ::grpc::Status GetFHIRSurveyAnswers(::grpc::ClientContext* context, const ::ondewo::survey::GetSurveyAnswersRequest& request, ::ondewo::survey::SurveyFHIRAnswersResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::SurveyFHIRAnswersResponse>> AsyncGetFHIRSurveyAnswers(::grpc::ClientContext* context, const ::ondewo::survey::GetSurveyAnswersRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::SurveyFHIRAnswersResponse>>(AsyncGetFHIRSurveyAnswersRaw(context, request, cq));
@@ -71,7 +65,7 @@ class FHIR final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::SurveyFHIRAnswersResponse>> PrepareAsyncGetFHIRSurveyAnswers(::grpc::ClientContext* context, const ::ondewo::survey::GetSurveyAnswersRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::SurveyFHIRAnswersResponse>>(PrepareAsyncGetFHIRSurveyAnswersRaw(context, request, cq));
     }
-    // Get all Survey Answers on FHIR format
+    // <p>Get all Survey Answers on FHIR format</p>
     virtual ::grpc::Status GetAllFHIRSurveyAnswers(::grpc::ClientContext* context, const ::ondewo::survey::GetAllSurveyAnswersRequest& request, ::ondewo::survey::SurveyFHIRAnswersResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::SurveyFHIRAnswersResponse>> AsyncGetAllFHIRSurveyAnswers(::grpc::ClientContext* context, const ::ondewo::survey::GetAllSurveyAnswersRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::ondewo::survey::SurveyFHIRAnswersResponse>>(AsyncGetAllFHIRSurveyAnswersRaw(context, request, cq));
@@ -82,13 +76,13 @@ class FHIR final {
     class async_interface {
      public:
       virtual ~async_interface() {}
-      // Create a Survey from FHIR format and an empty NLU Agent for it
+      // <p>Create a Survey from FHIR format and an empty NLU Agent for it</p>
       virtual void CreateFHIRSurvey(::grpc::ClientContext* context, const ::ondewo::survey::CreateFHIRSurveyRequest* request, ::ondewo::survey::Survey* response, std::function<void(::grpc::Status)>) = 0;
       virtual void CreateFHIRSurvey(::grpc::ClientContext* context, const ::ondewo::survey::CreateFHIRSurveyRequest* request, ::ondewo::survey::Survey* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // Get Survey Answers on FHIR format
+      // <p>Get Survey Answers on FHIR format</p>
       virtual void GetFHIRSurveyAnswers(::grpc::ClientContext* context, const ::ondewo::survey::GetSurveyAnswersRequest* request, ::ondewo::survey::SurveyFHIRAnswersResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void GetFHIRSurveyAnswers(::grpc::ClientContext* context, const ::ondewo::survey::GetSurveyAnswersRequest* request, ::ondewo::survey::SurveyFHIRAnswersResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // Get all Survey Answers on FHIR format
+      // <p>Get all Survey Answers on FHIR format</p>
       virtual void GetAllFHIRSurveyAnswers(::grpc::ClientContext* context, const ::ondewo::survey::GetAllSurveyAnswersRequest* request, ::ondewo::survey::SurveyFHIRAnswersResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void GetAllFHIRSurveyAnswers(::grpc::ClientContext* context, const ::ondewo::survey::GetAllSurveyAnswersRequest* request, ::ondewo::survey::SurveyFHIRAnswersResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
@@ -163,11 +157,11 @@ class FHIR final {
    public:
     Service();
     virtual ~Service();
-    // Create a Survey from FHIR format and an empty NLU Agent for it
+    // <p>Create a Survey from FHIR format and an empty NLU Agent for it</p>
     virtual ::grpc::Status CreateFHIRSurvey(::grpc::ServerContext* context, const ::ondewo::survey::CreateFHIRSurveyRequest* request, ::ondewo::survey::Survey* response);
-    // Get Survey Answers on FHIR format
+    // <p>Get Survey Answers on FHIR format</p>
     virtual ::grpc::Status GetFHIRSurveyAnswers(::grpc::ServerContext* context, const ::ondewo::survey::GetSurveyAnswersRequest* request, ::ondewo::survey::SurveyFHIRAnswersResponse* response);
-    // Get all Survey Answers on FHIR format
+    // <p>Get all Survey Answers on FHIR format</p>
     virtual ::grpc::Status GetAllFHIRSurveyAnswers(::grpc::ServerContext* context, const ::ondewo::survey::GetAllSurveyAnswersRequest* request, ::ondewo::survey::SurveyFHIRAnswersResponse* response);
   };
   template <class BaseClass>
