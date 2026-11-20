@@ -23,9 +23,11 @@ requests.
 helper, with `tests/test_tls.cc`), the test suite, and the guarded `client/` block in the root
 `CMakeLists.txt` - the compiler keeps a committed `CMakeLists.txt` on regeneration and copies `client/` into its
 build, so both survive `make build`. `api/`, `public-api.h`, `CMakeLists.txt` and
-`ondewo-client-config.cmake.in` are all produced by the `ondewo-cpp-proto-compiler` docker image. Editing them
-directly is never the fix - the next `make build` overwrites the change, and the pre-commit hooks exclude them
-so no formatter creates a spurious diff either.
+`ondewo-client-config.cmake.in` all come from the `ondewo-cpp-proto-compiler` docker image. Editing them
+directly is never the fix: the next `make build` overwrites `api/` and `public-api.h`, and the two build files
+are the compiler's defaults - it keeps the committed copies and writes its current ones to `api/*.generated`
+for comparison, so a change to them belongs in the compiler. The pre-commit hooks exclude all four, so no
+formatter creates a spurious diff either.
 
 Route your change to the repository that owns it:
 
@@ -57,9 +59,12 @@ A change in either submodule reaches this client by bumping its pin in the Makef
 ```shell
 make setup_developer_environment_locally   ## Submodules + pre-commit hooks
 make build                                 ## Regenerate the stubs and build the library
-make test                                  ## check_build + the CMake consumption smoke test
+make test                                  ## Stub checks, the test suite, the smoke test and the packaging dry-run
 make precommit_hooks_run_all_files         ## Run every pre-commit hook over the whole tree
 ```
+
+The host needs only `make`, `git`, Docker and `perl` (plus `pre-commit` for the hooks): `make build` and
+`make test` run everything that needs CMake, protobuf/gRPC or GoogleTest inside the `Dockerfile.utils` image.
 
 Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/) (`feat: …`, `fix(scope): …`,
 `docs: …`). Do **not** prepend the JIRA ticket yourself - the `giticket` pre-commit hook reads it from the

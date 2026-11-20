@@ -2,6 +2,16 @@
 
 *****************
 
+## Release ONDEWO SURVEY C++ Client 2.1.0
+
+### Improvements
+
+* Tracking API Version [2.1.0](https://github.com/ondewo/ondewo-survey-api/releases/tag/2.1.0) ( [Documentation](https://ondewo.github.io/ondewo-survey-api/) )
+* Generated with ondewo-proto-compiler 5.17.0 (protoc 3.21.12, Debian trixie). Runtime floors unchanged: protobuf 3.21.12 / grpc 1.51.1.
+* The build and the release run in docker, as in ondewo-nlu-client-cpp: CMake, protobuf/gRPC, GoogleTest and `gh` come from the utils image built from `Dockerfile.utils`, the compiler container runs as the invoking user (no `sudo`), the GitHub token is validated before anything is pushed, and the GitHub release is created last, in one `gh release create` with the package archive and its `.sha256` attached. The tag-triggered `release.yml` workflow is removed: CI only tests.
+
+*****************
+
 ## Release ONDEWO SURVEY C++ Client 2.0.1
 
 ### New Features

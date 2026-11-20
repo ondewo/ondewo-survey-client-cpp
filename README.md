@@ -59,10 +59,15 @@ protobuf C++ gives
 [no cross-version guarantee](https://protobuf.dev/support/cross-version-runtime-guarantee/) between generated
 code and runtime - they must match **exactly**. The stubs in `api/` are generated against the protobuf and gRPC
 versions pinned by `ondewo-proto-compiler/cpp/Dockerfile` (`ARG PROTOBUF_VERSION` / `ARG GRPC_VERSION`), which
-are the versions Debian stable and Ubuntu 24.04 ship. If your distribution ships a different protobuf, rebuild
-the stubs against it with `make build` rather than linking the committed ones.
+are the versions Debian stable and Ubuntu 24.04 ship. If your distribution ships a different protobuf, the
+committed stubs do not compile against it, and `make build` does not change that: it always regenerates them with
+the compiler image's pinned `protoc` and compiles them in the `Dockerfile.utils` image (Ubuntu 24.04) against the
+same pinned versions.
 
-To **regenerate** the stubs you additionally need Docker.
+To **regenerate, build, test or release** the client from this repository you need only `make`, `git`, Docker
+and `perl`: code generation runs in the `ondewo-cpp-proto-compiler` image, and CMake, protobuf/gRPC,
+GoogleTest and `gh` come from the `Dockerfile.utils` image (`ondewo-survey-client-utils-cpp:<version>`, built by
+`make build_utils_docker_image`), which runs as your user with the repository mounted.
 
 ## Setup
 
@@ -74,7 +79,7 @@ carries the built package as an asset: `ondewo_survey_client-<version>-<platform
 package-config files - so consuming it is one `find_package`, with no compiler run and no Docker.
 
 ```shell
-version=2.0.1
+version=2.1.0
 platform=linux-x86_64     ## uname -s | tr A-Z a-z, then uname -m
 archive=ondewo_survey_client-${version}-${platform}.tar.gz
 
@@ -119,7 +124,7 @@ set(ONDEWO_LIBRARY_NAME ondewo_survey_client CACHE STRING "" FORCE)
 FetchContent_Declare(
   ondewo_survey_client
   GIT_REPOSITORY https://github.com/ondewo/ondewo-survey-client-cpp.git
-  GIT_TAG        2.0.1)
+  GIT_TAG        2.1.0)
 FetchContent_MakeAvailable(ondewo_survey_client)
 
 # Note the UNqualified target name: the `ondewo::` namespace is created by the install/export step
@@ -356,12 +361,19 @@ That is the whole pipeline, and each step is also a target of its own:
 2. `make checkout_defined_submodule_versions` - check out the tags pinned in the Makefile's Variables chapter
 3. `make build_compiler` - build the image from the `ondewo-proto-compiler` submodule
 4. `make generate_ondewo_protos` - run the image over the `.proto` tree
-5. `make build_library` - configure, compile and install the library with CMake on the host
+5. `make build_utils_docker_image` - build the toolchain image from `Dockerfile.utils`
+6. `make build_library_via_docker_image` - configure, compile and install the library with CMake inside that
+   image (`make build_library` does the same natively, on a machine that has the toolchain installed)
 
 Step 4 is the contract with the compiler image, and it is a single `docker run`:
 
 ```shell
-docker run \
+docker run --rm \
+  --user $(id -u):$(id -g) \
+  -e HOME=/tmp \
+  -e TEMP_SRC_DIRECTORY=/tmp/ondewo-src \
+  -e BUILD_DIRECTORY=/tmp/ondewo-build \
+  -e INSTALL_DIRECTORY=/tmp/ondewo-install \
   -v $(pwd):/input-volume \
   -v $(pwd):/output-volume \
   ondewo-cpp-proto-compiler ondewo-survey-api ondewo ondewo_survey_client
@@ -380,12 +392,13 @@ Notes on the volumes:
   `lib/libondewo_survey_client.a` and `lib/cmake/ondewo_survey_client/` - so a proto that was renamed or
   deleted upstream leaves no orphan header behind, and nothing else in the repository is touched.
   `public-api.h` is wholly generated and is simply overwritten.
-- `CMakeLists.txt` and `ondewo-client-config.cmake.in` are never overwritten once they exist. The versions used
-  for the current build are written to `api/CMakeLists.txt.generated` and
-  `api/ondewo-client-config.cmake.in.generated` instead, so you can diff and adopt them after a compiler bump.
-- The container runs as root, so `make generate_ondewo_protos` calls `make fix_file_ownership` afterwards,
-  which `chown`s the generated files back to you. It may prompt for `sudo`; it is a labelled no-op when you
-  are already root or `sudo` is not installed, and never fails the build.
+- `CMakeLists.txt` and `ondewo-client-config.cmake.in` are never overwritten once they exist. The versions the
+  compiler image ships are written to `api/CMakeLists.txt.generated` and
+  `api/ondewo-client-config.cmake.in.generated` instead (both gitignored), so you can diff and adopt them after
+  a compiler bump.
+- The container runs as your user, so everything it writes is owned by you and nothing needs `sudo`
+  afterwards. The image's scripts default their scratch, build and install trees to the root-owned
+  `/image-data`; the three `*_DIRECTORY` variables move them to `/tmp` inside the container.
 
 There is no `-it` anywhere in the codegen invocation - it breaks every non-interactive caller with
 `cannot attach stdin to a TTY-enabled container because stdin is not a terminal`. Keep it only for the
@@ -397,6 +410,12 @@ interactive `--entrypoint /bin/bash` debug command.
 make test
 ```
 
+`make test` runs `check_stubs` and `check_build` on the host (they only read files) and then `unit_test`,
+`smoke_test` and `publish_dry_run` inside the utils image, against the library `make build` installed. Called on
+their own, those three run natively and need CMake, protobuf/gRPC and GoogleTest on the machine. CI
+(`.github/workflows/ci.yml`) runs `check_stubs`, `build_library`, `coverage` and `smoke_test` natively on
+Ubuntu 24.04, plus the pre-commit hooks, on every push and pull request.
+
 - `check_build` asserts that every `.proto` under `ondewo-survey-api/ondewo` produced a matching `.pb.h`.
 - `smoke_test` writes a throwaway project that does `find_package(ondewo_survey_client CONFIG REQUIRED)`,
   includes `public-api.h` and links `ondewo::ondewo_survey_client`, then compiles and runs it. That is the
@@ -405,8 +424,8 @@ make test
 - `publish_dry_run` builds the release archive and then consumes it: it extracts the tarball into a throwaway
   tree and builds `tests/package-consume` against nothing but that - `find_package()` is asserted to resolve
   inside the extracted archive, and the whole static library is forced into the link, so an incomplete archive
-  fails here rather than after it has been published. It needs no credentials and uploads nothing, and CI runs
-  it on every push.
+  fails here rather than after it has been published. It needs no credentials and uploads nothing, and every
+  release runs it before it pushes anything.
 
 `tests/test_tls.cc` exercises `<ondewo/client/channel.h>` against real in-process gRPC servers with a PKI the
 openssl CLI generates at test time (no key is committed): TLS, mutual TLS, a server refusing a client without a
@@ -417,27 +436,49 @@ the same 100 % line floor as `tests/`.
 
 ## Release
 
-See `RELEASE.md` for the release history and the Makefile's Release and Package chapters for the automation
-(`make ondewo_release`). There is no package registry for C++, so a release is a git tag, a GitHub release,
-and the built package attached to it:
+See `RELEASE.md` for the release history and the Makefile's Release, Package and GitHub chapters for the
+automation. A release runs entirely on the releasing machine with `make ondewo_release` - no CI workflow builds or
+publishes a release or holds a credential; `.github/workflows/ci.yml` only tests and lints. There is no package registry
+for C++, so a release is a git tag plus a GitHub release carrying the built package. It is normally started from
+[ondewo-survey-api](https://github.com/ondewo/ondewo-survey-api) with `make release_cpp_client` (or
+`make release_all_clients`), which sets the version in this Makefile, adds the `RELEASE.md` entry and then runs
+`make ondewo_release` here:
 
-| Target                 | What it does                                                                      |
-| ---------------------- | --------------------------------------------------------------------------------- |
-| `make build_package`   | stages the CMake install tree into `dist/<library>-<version>-<platform>.tar.gz` + `.sha256` |
-| `make verify_package`  | extracts that archive and consumes it from an unrelated CMake project              |
-| `make publish_dry_run` | both of the above - the credential-free packaging gate, also run by CI             |
-| `make publish`         | the dry-run, then `gh release upload` of the archive and its checksum              |
+1. `make update_readme_version` stamps the version into the two install snippets above, and `make spc` refuses
+   to go on when `release/<version>` or the tag already exists.
+2. The only credential, `GITHUB_GH_TOKEN`, is read from `account_github.env` in the `ondewo-devops-accounts`
+   repository. It is kept nowhere else. The repository is cloned into this checkout (gitignored) for the run
+   and removed after a successful one - delete `ondewo-devops-accounts/` yourself after a failed run.
+3. `make release` checks that the token is set and that GitHub accepts it with push access to this repository
+   (`make validate_release_credentials`, read-only), and that `RELEASE.md` has an entry for the version.
+4. `make build` and `make test` regenerate, compile and test the client and build and consume the release
+   archive (`make publish_dry_run`), all in Docker, before anything is pushed.
+5. The release commit is pushed to `master`, followed by the `release/<version>` branch and the tag.
+6. Last, `make push_to_gh`, inside the utils image, creates the GitHub release with the archive and its
+   `.sha256` attached. `gh release create` uploads the files to a draft and publishes it only once both are
+   attached, so a published release always carries its package.
 
-`make release` runs `make publish` after `make push_to_gh`, because `gh release upload` needs the release to
-exist. Pushing the version tag additionally starts `.github/workflows/release.yml`, which rebuilds the archive
-on a pinned runner, verifies it the same way and attaches it with the `ONDEWO_GH_TOKEN` repository secret -
-whichever gets there first wins, and the other replaces its own identical asset. The only credential involved
-anywhere is the GitHub token (`GITHUB_GH_TOKEN`, read from `account_github.env` in the devops-accounts repo by
-`make ondewo_release`); there is no registry account.
+The host needs only `make`, `git` (with SSH access to GitHub and Bitbucket), Docker and `perl`. The release also
+runs the pre-commit hooks when `pre-commit` is installed, and skips them otherwise.
 
-The workflow authenticates with the repository secret **`ONDEWO_GH_TOKEN`** - the same value as
-`GITHUB_GH_TOKEN` above. It cannot be called `GITHUB_GH_TOKEN`, because GitHub reserves every secret name
-starting with `GITHUB_`; `ONDEWO_GH_TOKEN` is the name every ONDEWO client repository uses for it.
+| Target                              | What it does                                                               |
+| ----------------------------------- | -------------------------------------------------------------------------- |
+| `make build_package`                | stages the CMake install tree into `dist/<library>-<version>-<platform>.tar.gz` + `.sha256` |
+| `make verify_package`               | extracts that archive and consumes it from an unrelated CMake project      |
+| `make publish_dry_run`              | both of the above - the credential-free packaging gate that `make test` runs |
+| `make release_to_github_via_docker` | only step 6 (the GitHub release with its files), inside the utils image    |
+
+If a release stops after the tag was pushed, `spc` refuses to run it again. Finish it from a checkout of the tag
+with the token from the devops repository - loaded in a subshell, so it does not stay in your shell's environment.
+`gh` normally deletes its draft when an upload fails; if a draft release for the version is still listed on GitHub,
+delete it first:
+
+```shell
+make build test
+make clone_devops_accounts
+(set -a; . ./ondewo-devops-accounts/account_github.env; set +a; make release_to_github_via_docker)
+rm -rf ondewo-devops-accounts
+```
 
 ## Contributing
 

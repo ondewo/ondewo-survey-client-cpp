@@ -1,14 +1,19 @@
 # Test suite
 
-GoogleTest/CTest suite over the **committed** stubs in `api/`. It needs no Docker, no proto
-compiler and neither submodule — it builds and exercises the code that is in this repository.
+GoogleTest/CTest suite over the **committed** stubs in `api/`. It needs no proto compiler and
+neither submodule — it builds and exercises the code that is in this repository.
 
 ```bash
 make build_library   # compile + install the client package into the repo root
 make unit_test       # build and run the suite
 make coverage        # same, under gcov, failing below COVERAGE_MIN % line coverage
-make test            # check_stubs -> check_build -> unit_test -> smoke_test
+make test            # check_stubs -> check_build -> unit_test -> smoke_test -> publish_dry_run
 ```
+
+The first three run natively and need CMake, protobuf/gRPC 3.21.x and GoogleTest on the machine,
+plus gcovr for `make coverage` (as in CI). `make test` needs only Docker: it runs `unit_test`,
+`smoke_test` and `publish_dry_run` in the `Dockerfile.utils` image, against the library `make build`
+(or `make build_library_via_docker_image`) installed.
 
 ## Layout
 
@@ -74,8 +79,9 @@ product-dependent branch — fixed at the root rather than by lowering the thres
 ## Notes on the build
 
 - The suite is a **standalone** CMake project and is not `add_subdirectory()`-ed from the root
-  `CMakeLists.txt`: that file is shipped verbatim by the compiler image and is overwritten on
-  every regeneration. Consuming the installed package instead is also the stronger test.
+  `CMakeLists.txt`: that file is the compiler image's, not hand-written - a regeneration keeps it
+  and writes the compiler's current copy to `api/CMakeLists.txt.generated`, so a change to it
+  belongs in the compiler. Consuming the installed package instead is also the stronger test.
 - It links the client archive with `--whole-archive` (`-force_load` on macOS). A static archive
   otherwise contributes only the objects needed to resolve a referenced symbol, and the
   descriptor registration of a generated `*.pb.o` is a static initialiser nothing references —
