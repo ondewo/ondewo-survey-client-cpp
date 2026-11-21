@@ -17,13 +17,14 @@ ARG GRPC_VERSION=1.51.1
 
 # The packages .github/workflows/ci.yml installs on its runner (the compiler image's toolchain plus
 # GoogleTest) except gcovr - `make coverage` never runs in this image - and make/git/perl/curl for
-# the Makefile recipes that run in here.
+# the Makefile recipes that run in here. libcurl4-openssl-dev is the HTTP client of the optional
+# Keycloak token transport (client/ondewo/client/keycloak_curl.h), which the auth tests compile.
 RUN apt-get update -qq \
   && apt-get install -y -qq --no-install-recommends \
     build-essential ca-certificates cmake curl git make perl pkg-config \
     protobuf-compiler libprotobuf-dev \
     protobuf-compiler-grpc libgrpc++-dev libgrpc-dev libabsl-dev \
-    libgtest-dev \
+    libgtest-dev libcurl4-openssl-dev \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
